@@ -10,6 +10,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.composeapp.components.BeersTab
 
 
+enum class DisplayTab {
+    SEARCH, FAVORITES
+}
+
+var BeersAPI = BeerController()
+
 @Preview
 @Composable
 fun App() {
@@ -17,17 +23,21 @@ fun App() {
 
     val items = listOf(
         mapOf(
-            "text" to "search", "icon" to Icons.Filled.Search
+            "id" to DisplayTab.SEARCH,
+            "text" to "search",
+            "icon" to Icons.Filled.Search
         ),
         mapOf(
-            "text" to "favourites", "icon" to Icons.Filled.Favorite
+            "id" to DisplayTab.FAVORITES,
+            "text" to "favourites",
+            "icon" to Icons.Filled.Favorite
         ),
     )
 
     Scaffold(topBar = {
         TopAppBar(title = { Text("Have a nice beer") })
     }, content = {
-        BeersTab()
+        BeersTab(items[selectedItem]["id"] as DisplayTab)
     },
         bottomBar = {
             BottomNavigation {

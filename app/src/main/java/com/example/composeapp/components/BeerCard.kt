@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.composeapp.Beer
+import com.example.composeapp.BeersAPI
 
 
 @Composable
@@ -33,7 +34,7 @@ fun BeerCard(beer: Beer) {
     var isFavorite by remember { mutableStateOf<Boolean>(beer.isFavorite) }
 
     fun toggleFavorite() {
-        // TODO trigger Favorites controller
+        BeersAPI.toggleFavorite(beer)
         isFavorite = !isFavorite
     }
 
