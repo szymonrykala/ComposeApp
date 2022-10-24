@@ -1,19 +1,17 @@
 package com.example.composeapp.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.example.composeapp.Beer
+
 
 @Composable
 @Preview
@@ -23,7 +21,8 @@ fun BeerCardPreview() {
         title = "Buzz zupa spoko",
         subtitle = "A Real Bitter Experience.",
         description = "A light, crisp and bitter IPA brewed with English and American hops. " + "A light, crisp and bitter IPA brewed with English and American hops" + "A small batch brewed only once.",
-        isFavorite = false
+        isFavorite = false,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     )
     BeerCard(beer = b)
 }
@@ -38,31 +37,30 @@ fun BeerCard(beer: Beer) {
         isFavorite = !isFavorite
     }
 
-    BeerCardView(beer = beer, onClickFavorite = { toggleFavorite() })
-}
-
-@Composable
-fun BeerCardView(
-    beer: Beer, onClickFavorite: () -> Unit
-) {
-    Card(elevation = 15.dp, modifier = Modifier.padding(8.dp)) {
+    Card(
+        elevation = 15.dp, modifier = Modifier.padding(8.dp)
+    ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Row {
-                Column(modifier = Modifier.fillMaxWidth(0.9F)) {
-                    Text(
-                        beer.title, fontSize = 32.sp
-                    )
-                }
-                Column {
-                    IconButton(onClick = { onClickFavorite() }) {
-                        Icon(
-                            (if (beer.isFavorite) Icons.Filled.Favorite else Icons.Outlined.Add),
-                            contentDescription = "add to favourites",
-//                            TODO change icon color
-                        )
-                    }
-                }
+                Text(
+                    beer.title, fontSize = 32.sp,
+                    modifier = Modifier.fillMaxWidth(0.9F)
+                )
+
+                BeerFavIcon(isFavorite, { toggleFavorite() })
             }
+
+            Row {
+                Image(
+                    painter = rememberAsyncImagePainter(beer.imageUrl),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(180.dp)
+                        .padding(8.dp)
+                )
+            }
+
             Row {
                 Text(beer.subtitle, fontSize = 20.sp)
             }
@@ -74,3 +72,4 @@ fun BeerCardView(
         }
     }
 }
+

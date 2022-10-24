@@ -7,4 +7,5 @@ data class Beer(
     val subtitle: String,
     val description: String,
     var isFavorite: Boolean,
+    val imageUrl: String,
 )

@@ -9,7 +9,8 @@ var beersCollection = listOf<Beer>(
         title = "Buzz 1",
         subtitle = "A Real Bitter Experience.",
         description = "A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once.",
-        isFavorite = true
+        isFavorite = true,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     ),
     Beer(
         id = 2,
@@ -20,6 +21,7 @@ var beersCollection = listOf<Beer>(
                 "too much to resist. All that is even before we get onto the fact that there are no additives, preservatives, pasteurization" +
                 " or strings attached. All wrapped up with the customary BrewDog bite and imaginative twist.",
         isFavorite = false,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     ),
     Beer(
         id = 3,
@@ -27,13 +29,15 @@ var beersCollection = listOf<Beer>(
         subtitle = "Japanese Citrus Berliner Weisse.",
         description = "Japanese citrus fruit intensifies the sour nature of this German classic.",
         isFavorite = false,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     ),
     Beer(
         id = 4,
         title = "Favourite 4 Buzz",
         subtitle = "A Real Bitter Experience.",
         description = "A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once.",
-        isFavorite = true
+        isFavorite = true,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     ),
     Beer(
         id = 5,
@@ -42,14 +46,16 @@ var beersCollection = listOf<Beer>(
         description = "A titillating, neurotic, peroxide punk of a Pale Ale. Combining attitude, style, substance, and a little bit" +
                 " of low self esteem for good measure; what would your mother say? The seductive lure of the sassy passion fruit hop proves " +
                 " or strings attached. All wrapped up with the customary BrewDog bite and imaginative twist.",
-        isFavorite = true
+        isFavorite = true,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     ),
     Beer(
         id = 6,
         title = "Favourite 6 Weisse With Yuzu - B-Sides",
         subtitle = "Japanese Citrus Berliner Weisse.",
-        description = "Japanese citrus fruit intensifies the sour nature of this German classic.",
-        isFavorite = true
+        description = "Japanese sdfsdfdsfsdret citrus fruit intensifies the sour nature of this German classic.",
+        isFavorite = true,
+        imageUrl = "https://images.punkapi.com/v2/2.png"
     ),
 )
 
