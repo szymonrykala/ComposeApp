@@ -1,77 +1,51 @@
 package com.example.composeapp
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.awaitResponse
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+
+
 // TODO API  ->>  https://api.punkapi.com/v2/beers
 
-var beersCollection = listOf(
-    mapOf<String, Any>(
-        "id" to 1,
-        "title" to "Buzz 1",
-        "subtitle" to "A Real Bitter Experience.",
-        "description" to "A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once.",
-        "imageUrl" to "https://images.punkapi.com/v2/2.png"
-    ),
-    mapOf<String, Any>(
-        "id" to 2,
-        "title" to "Trashy 2 Blonde",
-        "subtitle" to "You Know You Shouldn't",
-        "description" to "A titillating, neurotic, peroxide punk of a Pale Ale. Combining attitude, style, substance, and a little bit " +
-                "of low self esteem for good measure; what would your mother say? The seductive lure of the sassy passion fruit hop proves " +
-                "too much to resist. All that is even before we get onto the fact that there are no additives, preservatives, pasteurization" +
-                " or strings attached. All wrapped up with the customary BrewDog bite and imaginative twist.",
-        "imageUrl" to "https://images.punkapi.com/v2/2.png"
-    ),
-    mapOf<String, Any>(
-        "id" to 3,
-        "title" to "Berliner 3 Weisse With Yuzu - B-Sides",
-        "subtitle" to "Japanese Citrus Berliner Weisse.",
-        "description" to "Japanese citrus fruit intensifies the sour nature of this German classic.",
-        "imageUrl" to "https://images.punkapi.com/v2/2.png"
-    ),
-    mapOf<String, Any>(
-        "id" to 4,
-        "title" to "Favourite 4 Buzz",
-        "subtitle" to "A Real Bitter Experience.",
-        "description" to "A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once.",
-        "imageUrl" to "https://images.punkapi.com/v2/2.png"
-    ),
-    mapOf<String, Any>(
-        "id" to 5,
-        "title" to "Trashy 5 Blonde",
-        "subtitle" to "You Know You Should drink Your favourite beer",
-        "description" to "A titillating, neurotic, peroxide punk of a Pale Ale. Combining attitude, style, substance, and a little bit" +
-                " of low self esteem for good measure; what would your mother say? The seductive lure of the sassy passion fruit hop proves " +
-                " or strings attached. All wrapped up with the customary BrewDog bite and imaginative twist.",
-        "imageUrl" to "https://images.punkapi.com/v2/2.png"
-    ),
-    mapOf<String, Any>(
-        "id" to 6,
-        "title" to "Favourite 6 Weisse With Yuzu - B-Sides",
-        "subtitle" to "Japanese Citrus Berliner Weisse.",
-        "description" to "Japanese sdfsdfdsfsdret citrus fruit intensifies the sour nature of this German classic.",
-        "imageUrl" to "https://images.punkapi.com/v2/2.png"
-    ),
-)
+
+val mapper = jacksonObjectMapper()
+
+interface GitHubService {
+    @GET("beers")
+    fun getBeers(): Call<List<Beer?>?>?
+}
+
+var retrofit = Retrofit.Builder()
+    .baseUrl("https://api.punkapi.com/v2/")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()
+
+var service = retrofit.create(GitHubService::class.java)
+
 
 
 class BeerController {
-
     private val favoritesList = mutableListOf<Int>(1)
 
-    private fun createBeer(data:Map<String,Any>):Beer{
-        return Beer(
-            data["id"] as Int,
-            data["title"] as String,
-            data["subtitle"] as String,
-            data["description"] as String,
-            isFavorite = isFavorite(data["id"] as Int),
-            imageUrl = data["imageUrl"] as String
-        )
+    public suspend fun getAllBeers(): List<Beer?>? {
+
+        val response: Call<List<Beer?>?>? = service.getBeers()
+        var respData = response?.awaitResponse()?.body()
+
+        if(respData.isNullOrEmpty()){
+            return emptyList<Beer>()
+        }else{
+            return respData.map{beer -> updateBeerFavProp(beer!!)}
+        }
     }
 
-    public fun getAllBeers(): List<Beer> {
-        return beersCollection.map { data->createBeer(data) }
+    private fun updateBeerFavProp(beer:Beer):Beer{
+        beer.isFavorite = isFavorite(beer.id)
+        return beer
     }
-
 
     private fun isFavorite(id: Int): Boolean {
         return favoritesList.contains(id)
@@ -85,7 +59,6 @@ class BeerController {
         } else {
             addToFavorites(beer)
         }
-//        return nothing, if something is wrong, raise a proper exception
     }
 
     private fun addToFavorites(beer: Beer) {
@@ -98,9 +71,9 @@ class BeerController {
         beer.isFavorite = false
     }
 
-    public fun getFavoritesBears(): List<Beer> {
-//        normally need to get this offline - from memory
-
-        return getAllBeers().filter { beer -> isFavorite(beer.id) }
+    public suspend fun getFavoritesBears(): List<Beer> {
+//        return getAllBeers().filter { beer -> isFavorite(beer.id) }
+        return emptyList<Beer>()
     }
+
 }

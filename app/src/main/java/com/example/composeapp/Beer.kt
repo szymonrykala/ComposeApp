@@ -3,9 +3,10 @@ package com.example.composeapp
 
 data class Beer(
     val id:Int,
-    val title: String,
-    val subtitle: String,
+    val name: String,
+    val tagline: String,
     val description: String,
-    var isFavorite: Boolean,
-    val imageUrl: String,
+    var isFavorite: Boolean = false,
+    val image_url: String,
 )
+

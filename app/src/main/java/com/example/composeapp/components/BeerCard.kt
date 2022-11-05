@@ -19,11 +19,11 @@ import com.example.composeapp.BeersAPI
 fun BeerCardPreview() {
     val b = Beer(
         id = 4,
-        title = "Buzz zupa spoko",
-        subtitle = "A Real Bitter Experience.",
+        name = "Buzz zupa spoko",
+        tagline = "A Real Bitter Experience.",
         description = "A light, crisp and bitter IPA brewed with English and American hops. " + "A light, crisp and bitter IPA brewed with English and American hops" + "A small batch brewed only once.",
         isFavorite = false,
-        imageUrl = "https://images.punkapi.com/v2/2.png"
+        image_url = "https://images.punkapi.com/v2/2.png"
     )
     BeerCard(beer = b)
 }
@@ -44,7 +44,7 @@ fun BeerCard(beer: Beer) {
         Column(modifier = Modifier.padding(10.dp)) {
             Row {
                 Text(
-                    beer.title, fontSize = 32.sp,
+                    beer.name, fontSize = 32.sp,
                     modifier = Modifier.fillMaxWidth(0.9F)
                 )
 
@@ -53,7 +53,7 @@ fun BeerCard(beer: Beer) {
 
             Row {
                 Image(
-                    painter = rememberAsyncImagePainter(beer.imageUrl),
+                    painter = rememberAsyncImagePainter(beer.image_url),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -63,7 +63,7 @@ fun BeerCard(beer: Beer) {
             }
 
             Row {
-                Text(beer.subtitle, fontSize = 20.sp)
+                Text(beer.tagline, fontSize = 20.sp)
             }
             Spacer(modifier = Modifier.padding(5.dp))
 
