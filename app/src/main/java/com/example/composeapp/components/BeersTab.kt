@@ -9,13 +9,13 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.composeapp.Beer
 import com.example.composeapp.BeersAPI
 import com.example.composeapp.DisplayTab
+import com.example.composeapp.db.BeerEntity
 import kotlinx.coroutines.launch
 
 
-suspend fun getBeers(tabType: DisplayTab): List<Beer?>? {
+suspend fun getBeers(tabType: DisplayTab): List<BeerEntity?>? {
     return if (tabType == DisplayTab.SEARCH) {
         BeersAPI.getAllBeers()
     } else {
@@ -26,12 +26,12 @@ suspend fun getBeers(tabType: DisplayTab): List<Beer?>? {
 
 @Composable
 fun BeersTab(tabType: DisplayTab, scaffoldState: ScaffoldState = rememberScaffoldState()) {
-    var beers by remember { mutableStateOf<List<Beer>>(emptyList()) }
+    var beers by remember { mutableStateOf<List<BeerEntity>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(scaffoldState.snackbarHostState) {
         coroutineScope.launch {
-            beers = getBeers(tabType) as List<Beer>
+            beers = getBeers(tabType) as List<BeerEntity>
         }
 
         scaffoldState.snackbarHostState.showSnackbar(

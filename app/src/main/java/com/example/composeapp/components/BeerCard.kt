@@ -10,14 +10,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.composeapp.Beer
 import com.example.composeapp.BeersAPI
+import com.example.composeapp.db.BeerEntity
 
 
 @Composable
 @Preview
 fun BeerCardPreview() {
-    val b = Beer(
+    val b = BeerEntity(
         id = 4,
         name = "Buzz zupa spoko",
         tagline = "A Real Bitter Experience.",
@@ -30,7 +30,7 @@ fun BeerCardPreview() {
 
 
 @Composable
-fun BeerCard(beer: Beer) {
+fun BeerCard(beer: BeerEntity) {
     var isFavorite by remember { mutableStateOf<Boolean>(beer.isFavorite) }
 
     fun toggleFavorite() {

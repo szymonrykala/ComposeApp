@@ -8,11 +8,20 @@ import com.example.composeapp.db.Constants.BEER_TABLE
 @Entity(tableName = BEER_TABLE)
 data class BeerEntity (
     @PrimaryKey(autoGenerate = false)
-    val beerId :Int,
+    val id :Int,
 
-    @ColumnInfo(name = "beer_title")
-    val beerTitle:String,
+    @ColumnInfo(name = "name")
+    val name:String,
 
-    @ColumnInfo(name = "beer_desc")
-    val beerDesc : String
+    @ColumnInfo(name = "description")
+    val description : String,
+
+    @ColumnInfo(name = "tagline")
+    val tagline: String,
+
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite: Boolean = false,
+
+    @ColumnInfo(name = "image_url")
+    val image_url: String,
 )

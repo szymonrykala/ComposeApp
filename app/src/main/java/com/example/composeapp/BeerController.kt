@@ -1,5 +1,6 @@
 package com.example.composeapp
 
+import com.example.composeapp.db.BeerEntity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -15,7 +16,7 @@ val mapper = jacksonObjectMapper()
 
 interface GitHubService {
     @GET("beers")
-    fun getBeers(): Call<List<Beer?>?>?
+    fun getBeers(): Call<List<BeerEntity?>?>?
 }
 
 var retrofit = Retrofit.Builder()
@@ -30,19 +31,19 @@ var service = retrofit.create(GitHubService::class.java)
 class BeerController {
     private val favoritesList = mutableListOf<Int>(1)
 
-    public suspend fun getAllBeers(): List<Beer?>? {
+    public suspend fun getAllBeers(): List<BeerEntity?>? {
 
-        val response: Call<List<Beer?>?>? = service.getBeers()
+        val response: Call<List<BeerEntity?>?>? = service.getBeers()
         var respData = response?.awaitResponse()?.body()
 
         if(respData.isNullOrEmpty()){
-            return emptyList<Beer>()
+            return emptyList<BeerEntity>()
         }else{
             return respData.map{beer -> updateBeerFavProp(beer!!)}
         }
     }
 
-    private fun updateBeerFavProp(beer:Beer):Beer{
+    private fun updateBeerFavProp(beer:BeerEntity):BeerEntity{
         beer.isFavorite = isFavorite(beer.id)
         return beer
     }
@@ -52,7 +53,7 @@ class BeerController {
     }
 
     //    TODO You may consider creating an Favorites controller or so
-    public fun toggleFavorite(beer: Beer) {
+    public fun toggleFavorite(beer: BeerEntity) {
 //       TODO: adding to favorites - saving in ROOM or in firebase/firestore
         if (isFavorite(beer.id)) {
             removeFromFavorites(beer)
@@ -61,19 +62,19 @@ class BeerController {
         }
     }
 
-    private fun addToFavorites(beer: Beer) {
+    private fun addToFavorites(beer: BeerEntity) {
         favoritesList.add(beer.id)
         beer.isFavorite = true
     }
 
-    private fun removeFromFavorites(beer: Beer) {
+    private fun removeFromFavorites(beer: BeerEntity) {
         favoritesList.remove(beer.id)
         beer.isFavorite = false
     }
 
-    public suspend fun getFavoritesBears(): List<Beer> {
+    public suspend fun getFavoritesBears(): List<BeerEntity> {
 //        return getAllBeers().filter { beer -> isFavorite(beer.id) }
-        return emptyList<Beer>()
+        return emptyList<BeerEntity>()
     }
 
 }
