@@ -6,20 +6,27 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.composeapp.components.BeersTab
+import kotlinx.coroutines.launch
 
 
 enum class DisplayTab {
     SEARCH, FAVORITES
 }
 
-var BeersAPI = BeerController()
+val BeersView = BeersViewModel()
 
-@Preview
+
 @Composable
-fun App() {
+fun App(scaffoldState: ScaffoldState = rememberScaffoldState()) {
     var selectedItem by remember { mutableStateOf(0) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(scaffoldState) {
+        coroutineScope.launch {
+            BeersView.loadBeersFromWeb()
+        }
+    }
 
     val items = listOf(
         mapOf(

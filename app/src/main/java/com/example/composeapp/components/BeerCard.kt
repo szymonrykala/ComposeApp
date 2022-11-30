@@ -10,32 +10,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.composeapp.Beer
-import com.example.composeapp.BeersAPI
+import com.example.composeapp.BeersView
+import com.example.composeapp.db.BeerEntity
 
 
 @Composable
 @Preview
 fun BeerCardPreview() {
-    val b = Beer(
+    val b = BeerEntity(
         id = 4,
-        title = "Buzz zupa spoko",
-        subtitle = "A Real Bitter Experience.",
+        name = "Buzz zupa spoko",
+        tagline = "A Real Bitter Experience.",
         description = "A light, crisp and bitter IPA brewed with English and American hops. " + "A light, crisp and bitter IPA brewed with English and American hops" + "A small batch brewed only once.",
         isFavorite = false,
-        imageUrl = "https://images.punkapi.com/v2/2.png"
+        image_url = "https://images.punkapi.com/v2/2.png"
     )
     BeerCard(beer = b)
 }
 
 
+
 @Composable
-fun BeerCard(beer: Beer) {
+fun BeerCard(beer: BeerEntity) {
     var isFavorite by remember { mutableStateOf<Boolean>(beer.isFavorite) }
 
     fun toggleFavorite() {
-        BeersAPI.toggleFavorite(beer)
-        isFavorite = !isFavorite
+        if(beer.isFavorite){
+            BeersView.removeFavorite(beer)
+            isFavorite = false
+        }else{
+            BeersView.addFavorite(beer)
+            isFavorite = true
+        }
     }
 
     Card(
@@ -44,16 +50,16 @@ fun BeerCard(beer: Beer) {
         Column(modifier = Modifier.padding(10.dp)) {
             Row {
                 Text(
-                    beer.title, fontSize = 32.sp,
+                    beer.name, fontSize = 32.sp,
                     modifier = Modifier.fillMaxWidth(0.9F)
                 )
 
-                BeerFavIcon(isFavorite, { toggleFavorite() })
+                BeerFavIcon(isFavorite) { toggleFavorite() }
             }
 
             Row {
                 Image(
-                    painter = rememberAsyncImagePainter(beer.imageUrl),
+                    painter = rememberAsyncImagePainter(beer.image_url),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -63,7 +69,7 @@ fun BeerCard(beer: Beer) {
             }
 
             Row {
-                Text(beer.subtitle, fontSize = 20.sp)
+                Text(beer.tagline, fontSize = 20.sp)
             }
             Spacer(modifier = Modifier.padding(5.dp))
 
