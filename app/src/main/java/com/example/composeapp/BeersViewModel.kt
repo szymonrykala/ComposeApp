@@ -11,8 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 
-// TODO API  ->>  https://api.punkapi.com/v2/beers
-
 
 interface IBeersService {
     @GET("beers")
@@ -65,6 +63,4 @@ class BeersViewModel : ViewModel() {
     public fun getFavorites(): List<BeerEntity> {
         return _beers.value.filter { it.isFavorite }
     }
-
-
 }

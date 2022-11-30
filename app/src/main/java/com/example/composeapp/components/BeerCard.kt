@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.composeapp.BeersAPI
+import com.example.composeapp.BeersView
 import com.example.composeapp.db.BeerEntity
 
 
@@ -29,13 +29,19 @@ fun BeerCardPreview() {
 }
 
 
+
 @Composable
 fun BeerCard(beer: BeerEntity) {
     var isFavorite by remember { mutableStateOf<Boolean>(beer.isFavorite) }
 
     fun toggleFavorite() {
-        BeersAPI.toggleFavorite(beer)
-        isFavorite = !isFavorite
+        if(beer.isFavorite){
+            BeersView.removeFavorite(beer)
+            isFavorite = false
+        }else{
+            BeersView.addFavorite(beer)
+            isFavorite = true
+        }
     }
 
     Card(
@@ -48,7 +54,7 @@ fun BeerCard(beer: BeerEntity) {
                     modifier = Modifier.fillMaxWidth(0.9F)
                 )
 
-                BeerFavIcon(isFavorite, { toggleFavorite() })
+                BeerFavIcon(isFavorite) { toggleFavorite() }
             }
 
             Row {
