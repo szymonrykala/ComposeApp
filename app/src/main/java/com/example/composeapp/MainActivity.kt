@@ -14,6 +14,8 @@ import com.example.composeapp.ui.theme.ComposeAppTheme
 
 class MainActivity : ComponentActivity() {
 
+//    val beersViewModel: BeersViewModel by ViewModels()
+
     private val beerDB : BeerDatabase by lazy {
         Room.databaseBuilder(this,BeerDatabase::class.java,BEER_DATABASE)
             .allowMainThreadQueries()
@@ -21,15 +23,19 @@ class MainActivity : ComponentActivity() {
             .build()
     }
 
+    private val beersView = BeersViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ComposeAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    App()
+                    App(
+                        this.beerDB
+                    )
                 }
             }
         }

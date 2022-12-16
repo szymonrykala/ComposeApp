@@ -1,14 +1,23 @@
 package com.example.composeapp
 
+import android.content.Context
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.composeapp.components.BeersTab
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.Room
+import com.example.composeapp.components.BeerCard
+import com.example.composeapp.db.BeerDatabase
+import com.example.composeapp.db.Constants
 import kotlinx.coroutines.launch
-
 
 enum class DisplayTab {
     SEARCH, FAVORITES
@@ -16,47 +25,67 @@ enum class DisplayTab {
 
 val BeersView = BeersViewModel()
 
+data class NavButton(
+    var id: DisplayTab,
+    var text: String,
+    var icon: ImageVector
+)
+
+var navButtons = listOf<NavButton>(
+    NavButton(DisplayTab.SEARCH, "search", Icons.Filled.Search),
+    NavButton(DisplayTab.FAVORITES, "favourites", Icons.Filled.Favorite)
+)
+
 
 @Composable
-fun App(scaffoldState: ScaffoldState = rememberScaffoldState()) {
-    var selectedItem by remember { mutableStateOf(0) }
+fun App(
+    beerDB: BeerDatabase,
+    context: Context = LocalContext.current,
+    beersView: BeersViewModel = viewModel(),
+    scaffoldState: ScaffoldState = rememberScaffoldState()
+) {
+    var selectedItem by remember { mutableStateOf<NavButton>(navButtons[0]) }
+    val beers by beersView.beers.collectAsState()
+
+
+    Room.databaseBuilder(context,BeerDatabase::class.java, Constants.BEER_DATABASE)
+        .allowMainThreadQueries()
+        .fallbackToDestructiveMigration()
+        .build()
+
+
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(scaffoldState) {
         coroutineScope.launch {
-            BeersView.loadBeersFromWeb()
+//            BeersView.setFavList(listOf(1, 3, 5))
+//            BeersView.loadBeersFromWeb()
         }
     }
 
-    val items = listOf(
-        mapOf(
-            "id" to DisplayTab.SEARCH,
-            "text" to "search",
-            "icon" to Icons.Filled.Search
-        ),
-        mapOf(
-            "id" to DisplayTab.FAVORITES,
-            "text" to "favourites",
-            "icon" to Icons.Filled.Favorite
-        ),
-    )
 
     Scaffold(topBar = {
         TopAppBar(title = { Text("Have a nice beer") })
     }, content = {
-        BeersTab(items[selectedItem]["id"] as DisplayTab)
+//        BeersTab(items[selectedItem]["id"] as DisplayTab)
+        LazyColumn(modifier = Modifier.fillMaxHeight()) {
+            items(
+                items = (beers),
+                key = { beer -> beer.id }
+            ) { beer ->
+                BeerCard(beer)
+            }
+        }
     },
         bottomBar = {
             BottomNavigation {
-                items.forEachIndexed { index, item ->
-                    BottomNavigationItem(selected = (selectedItem == index),
-                        onClick = { selectedItem = index },
-                        label = { Text(item["text"] as String) },
+//                navButtons.map {  }
+                navButtons.forEach { item ->
+                    BottomNavigationItem(selected = (selectedItem == item),
+                        onClick = { selectedItem = item },
+                        label = { Text(item.text) },
                         icon = {
-                            Icon(
-                                item["icon"] as ImageVector,
-                                contentDescription = item["text"] as String
-                            )
+                            Icon(item.icon, item.text)
                         })
                 }
             }
