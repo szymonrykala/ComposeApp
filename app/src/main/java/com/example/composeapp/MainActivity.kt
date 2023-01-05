@@ -14,16 +14,10 @@ import com.example.composeapp.ui.theme.ComposeAppTheme
 
 class MainActivity : ComponentActivity() {
 
-//    val beersViewModel: BeersViewModel by ViewModels()
-
-    private val beerDB : BeerDatabase by lazy {
-        Room.databaseBuilder(this,BeerDatabase::class.java,BEER_DATABASE)
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
+    private val beerDB: BeerDatabase by lazy {
+        Room.databaseBuilder(this, BeerDatabase::class.java, BEER_DATABASE).allowMainThreadQueries()
+            .fallbackToDestructiveMigration().build()
     }
-
-    private val beersView = BeersViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +27,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    App(
-                        this.beerDB
-                    )
+                    App(this.beerDB)
                 }
             }
-        }
-    }
-
-    private fun checkItem(){
-        if(beerDB.doa().getAllBeers().isNotEmpty()){
-            // something
-        }
-        else{
-            // something else
         }
     }
 }

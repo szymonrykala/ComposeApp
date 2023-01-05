@@ -6,43 +6,25 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.composeapp.db.BeerEntity
-
-
-//@Composable
-//@Preview
-//fun BeerCardPreview() {
-//    val b = BeerEntity(
-//        id = 4,
-//        name = "Buzz zupa spoko",
-//        tagline = "A Real Bitter Experience.",
-//        description = "A light, crisp and bitter IPA brewed with English and American hops. " + "A light, crisp and bitter IPA brewed with English and American hops" + "A small batch brewed only once.",
-//        isFavorite = false,
-//        image_url = "https://images.punkapi.com/v2/2.png"
-//    )
-//    BeerCard(beer = b)
-//}
+import com.example.composeapp.db.BeerModel
 
 
 @Composable
 fun BeerCard(
-    beer: BeerEntity,
-    onSave: (beer: BeerEntity) -> Unit ,
-    onDelete: (beer: BeerEntity) -> Unit
+    beer: BeerModel, onSave: (beer: BeerModel) -> Unit, onDelete: (beer: BeerModel) -> Unit
 ) {
-    var isFavorite by remember { mutableStateOf<Boolean>(beer.isFavorite) }
+    var isFavorite by remember { mutableStateOf<Boolean>(beer.isSaved) }
 
     fun toggleFavorite() {
-        if (beer.isFavorite) {
-            beer.isFavorite = false
+        if (beer.isSaved) {
+            beer.isSaved = false
             isFavorite = false
             onDelete(beer)
         } else {
-            beer.isFavorite = true
+            beer.isSaved = true
             isFavorite = true
             onSave(beer)
         }
@@ -54,8 +36,7 @@ fun BeerCard(
         Column(modifier = Modifier.padding(10.dp)) {
             Row {
                 Text(
-                    beer.name, fontSize = 32.sp,
-                    modifier = Modifier.fillMaxWidth(0.9F)
+                    beer.name, fontSize = 32.sp, modifier = Modifier.fillMaxWidth(0.9F)
                 )
                 BeerFavIcon(isFavorite) { toggleFavorite() }
             }

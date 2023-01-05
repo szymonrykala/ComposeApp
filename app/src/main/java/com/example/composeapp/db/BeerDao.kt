@@ -6,21 +6,21 @@ import com.example.composeapp.db.Constants.BEER_TABLE
 @Dao
 interface BeerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBeer(beerEntity: BeerEntity)
+    fun insertBeer(beerEntity: BeerModel)
 
     @Update
-    fun updateBeer(beerEntity: BeerEntity)
+    fun updateBeer(beerEntity: BeerModel)
 
     @Delete
-    fun deleteBeer(beerEntity: BeerEntity)
+    fun deleteBeer(beerEntity: BeerModel)
 
     @Query("SELECT * FROM $BEER_TABLE ORDER BY id DESC")
-    fun getAllBeers() : MutableList<BeerEntity>
+    fun getAllBeers(): MutableList<BeerModel>
 
     @Query("SELECT id FROM $BEER_TABLE ORDER BY id DESC")
-    fun getAllBeersIds() : MutableList<Int>
+    fun getAllBeersIds(): MutableList<Int>
 
     @Query("SELECT * FROM $BEER_TABLE WHERE id LIKE :beerId")
-    fun getBeer(beerId : Int) : BeerEntity
+    fun getBeer(beerId: Int): BeerModel
 
 }
