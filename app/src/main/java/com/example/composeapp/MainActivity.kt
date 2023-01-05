@@ -14,33 +14,22 @@ import com.example.composeapp.ui.theme.ComposeAppTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val beerDB : BeerDatabase by lazy {
-        Room.databaseBuilder(this,BeerDatabase::class.java,BEER_DATABASE)
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
+    private val beerDB: BeerDatabase by lazy {
+        Room.databaseBuilder(this, BeerDatabase::class.java, BEER_DATABASE).allowMainThreadQueries()
+            .fallbackToDestructiveMigration().build()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ComposeAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    App()
+                    App(this.beerDB)
                 }
             }
-        }
-    }
-
-    private fun checkItem(){
-        if(beerDB.doa().getAllBeers().isNotEmpty()){
-            // something
-        }
-        else{
-            // something else
         }
     }
 }
