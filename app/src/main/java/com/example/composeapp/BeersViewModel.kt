@@ -27,8 +27,6 @@ var BeersService: IBeersService = retrofit.create(IBeersService::class.java)
 
 
 class BeersViewModel : ViewModel() {
-    private var db = null
-
     private var _beers = MutableStateFlow(emptyList<BeerEntity>())
     val beers = _beers.asStateFlow()
 
@@ -57,17 +55,17 @@ class BeersViewModel : ViewModel() {
         this._favList.value = favIds
     }
 
-    public fun addFavorite(beer: BeerEntity) {
-        _favList.value = _favList.value.plus(beer.id)
-        _beers.value.find { it.id == beer.id }?.isFavorite = true
+    public fun addToSavedList(beerId: Int)  {
+        _favList.value = _favList.value.plus(beerId)
+        _beers.value.find { it.id == beerId }?.isFavorite = true
     }
 
-    public fun removeFavorite(beer: BeerEntity) {
-        _favList.value = _favList.value.filter { it != beer.id }
-        _beers.value.find { it.id == beer.id }?.isFavorite = false
+    public fun removeFromSavedList(beerId: Int) {
+        _favList.value = _favList.value.filter { it != beerId }
+        _beers.value.find { it.id == beerId }?.isFavorite = false
     }
 
-    public fun getFavorites(): List<BeerEntity> {
-        return _beers.value.filter { it.isFavorite }
-    }
+//    public fun getFavorites(): List<BeerEntity> {
+//        return _beers.value.filter { it.isFavorite }
+//    }
 }

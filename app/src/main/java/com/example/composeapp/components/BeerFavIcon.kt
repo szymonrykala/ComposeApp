@@ -5,7 +5,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -17,7 +20,7 @@ fun BeerFavIcon(
     IconButton(onClick = { onClick() }) {
         if (isFavorite) {
             Icon(
-                Icons.Filled.Favorite,
+                Icons.Filled.Star,
                 contentDescription = "add to favourites",
                 tint = Color.Red
             )

@@ -17,6 +17,9 @@ interface BeerDao {
     @Query("SELECT * FROM $BEER_TABLE ORDER BY id DESC")
     fun getAllBeers() : MutableList<BeerEntity>
 
+    @Query("SELECT id FROM $BEER_TABLE ORDER BY id DESC")
+    fun getAllBeersIds() : MutableList<Int>
+
     @Query("SELECT * FROM $BEER_TABLE WHERE id LIKE :beerId")
     fun getBeer(beerId : Int) : BeerEntity
 
