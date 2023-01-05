@@ -40,22 +40,26 @@ class BeersViewModel : ViewModel() {
     }
 
     private suspend fun loadBeersFromWeb() {
-        val response: Call<List<BeerEntity?>?>? = BeersService.getBeers()
-        var respData = response?.awaitResponse()?.body()
+        try {
+            val response: Call<List<BeerEntity?>?>? = BeersService.getBeers()
+            var respData = response?.awaitResponse()?.body()
 
-        if (respData.isNullOrEmpty()) {
-            emptyList<BeerEntity>()
-        } else {
-            respData.forEach { it?.isFavorite = favList.value.contains(it?.id) }
-            _beers.value = (respData as List<BeerEntity>?)!!
+            if (respData.isNullOrEmpty()) {
+                emptyList<BeerEntity>()
+            } else {
+                respData.forEach { it?.isFavorite = favList.value.contains(it?.id) }
+                _beers.value = (respData as List<BeerEntity>?)!!
+            }
+        } catch (e: Exception) {
+            _beers.value = emptyList<BeerEntity>()
         }
     }
 
-    public fun setFavList(favIds:List<Int>) {
+    public fun setFavList(favIds: List<Int>) {
         this._favList.value = favIds
     }
 
-    public fun addToSavedList(beerId: Int)  {
+    public fun addToSavedList(beerId: Int) {
         _favList.value = _favList.value.plus(beerId)
         _beers.value.find { it.id == beerId }?.isFavorite = true
     }
