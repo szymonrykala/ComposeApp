@@ -14,10 +14,10 @@ interface BeerDao {
     @Delete
     fun deleteBeer(beerEntity: BeerModel)
 
-    @Query("SELECT * FROM $BEER_TABLE ORDER BY id DESC")
+    @Query("SELECT * FROM $BEER_TABLE ORDER BY id ASC")
     fun getAllBeers(): MutableList<BeerModel>
 
-    @Query("SELECT id FROM $BEER_TABLE ORDER BY id DESC")
+    @Query("SELECT id FROM $BEER_TABLE ORDER BY id ASC")
     fun getAllBeersIds(): MutableList<Int>
 
     @Query("SELECT * FROM $BEER_TABLE WHERE id LIKE :beerId")
